@@ -35,6 +35,42 @@ let cities = [
       latitude: 29.941305,
       longitude: -90.083081,
     },
+
+       
+
     // Add more cities here
   ];
-  
+
+
+  const cityDropdown = document.getElementById("cityDropdown")
+  const weatherTable = document.getElementById("weatherTable")
+
+  cities.forEach(city=>{
+    const option = document.createElement("option")
+    console.log(option)
+    option.value = city.name
+    option.text = city.name
+    cityDropdown.appendChild(option)
+  })
+
+  cityDropdown.addEventListener("change", function(){
+    const selectedCityName = this.value
+    const selectedCity = cities.find(city=>city.name===selectedCityName)
+    console.log("Here is the selected city name:",selectedCityName)
+    console.log("Here is the selected city data:",selectedCity)
+    if(selectedCity){
+      const {latitude, longitude} = selectedCity
+      console.log("here is the long:" ,latitude)
+      console.log("here is the long:", longitude)
+      const stationLookupUrl = `https://api.weather.gov/points/${latitude},${longitude}`.
+      fetch(stationLookupUrl)
+      .then(response=>response.json())
+      .then(data=>{
+        console.log("Here is my data in main.js @ line 69:", data)
+        const forecastUrl = data.properties.forecast
+        getWeather(forecastUrl)
+      }).catch(error=>console.error(error))
+
+    }
+  })
+

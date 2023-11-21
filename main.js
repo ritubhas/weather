@@ -36,7 +36,7 @@ let cities = [
       longitude: -90.083081,
     },
 
-       
+         
 
     // Add more cities here
   ];
@@ -56,13 +56,14 @@ let cities = [
   cityDropdown.addEventListener("change", function(){
     const selectedCityName = this.value
     const selectedCity = cities.find(city=>city.name===selectedCityName)
+    //city variable has all enteries of array cities and we are looking for city.name property from variable city
     console.log("Here is the selected city name:",selectedCityName)
     console.log("Here is the selected city data:",selectedCity)
     if(selectedCity){
       const {latitude, longitude} = selectedCity
       console.log("here is the long:" ,latitude)
       console.log("here is the long:", longitude)
-      const stationLookupUrl = `https://api.weather.gov/points/${latitude},${longitude}`.
+      const stationLookupUrl = `https://api.weather.gov/points/${latitude},${longitude}`;
       fetch(stationLookupUrl)
       .then(response=>response.json())
       .then(data=>{
@@ -74,3 +75,11 @@ let cities = [
     }
   })
 
+  function getWeather(forecastUrl){
+     fetch(forecastUrl).then(response=>response.json()).then(data=>{
+       const forcastArray = data.properties.periods
+       console.log("here is my data for funtion: ",data)
+       displayWeather(forcastArray)
+     }).catch(error=>console.error(error))
+
+  }
